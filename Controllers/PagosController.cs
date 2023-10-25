@@ -8,43 +8,37 @@ using System.Web.Mvc;
 
 namespace CrudASPEjemplo.Controllers
 {
-    public class PagoController : Controller
+    public class PagosController : Controller
     {
-        // GET: Pago
+        // GET: Pagos
+        //lista de pagos
         public ActionResult Index()
         {
             using (var context = new PagosContext())
             {
-                var pagos = context.Pagos.ToList();
-
-                return View(pagos);
-
+                return View(context.Pagos.ToList());
             }
         }
 
-        // GET: Pago/Details/5
+        // GET: Pagos/Details/5
+        //detalles de un pago por su id
         public ActionResult Details(int id)
         {
             using (var context = new PagosContext())
             {
-                var pagos = context.Pagos.Where(x => x.id == id);
-
-                var pagos2 = (from p in context.Pagos
-                              where p.id == id
-                              select p).FirstOrDefault();
-
-                return View(pagos);
-
+                return View(context.Pagos.Where(x => x.Id == id).FirstOrDefault());
             }
         }
 
-        // GET: Pago/Create
+        // GET: Pagos/Create
+        //no lo usamos
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Pago/Create
+        // POST: Pagos/Create
+        //crea un pago
         [HttpPost]
         public ActionResult Create(Pago pago)
         {
@@ -54,51 +48,6 @@ namespace CrudASPEjemplo.Controllers
                 {
                     context.Pagos.Add(pago);
                     context.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Pago/Edit/5
-        public ActionResult Edit(int id)
-        {
-            using (var context = new PagosContext())
-            {
-                var pagos = context.Pagos.Where(x => x.id == id);
-
-                var pagos2 = (from p in context.Pagos
-                              where p.id == id
-                              select p).FirstOrDefault();
-
-                return View(pagos);
-            }
-        }
-
-        // POST: Pago/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, Pago pago)
-        {
-            try
-            {
-                try
-                {
-                    using (var context = new PagosContext())
-                    {
-                        context.Entry(pago).State = EntityState.Modified;
-                        context.SaveChanges();
-                    }
-
-                    return RedirectToAction("Index");
-
-                }
-                catch
-                {
-                    return View();
                 }
 
                 return RedirectToAction("Index");
@@ -109,19 +58,45 @@ namespace CrudASPEjemplo.Controllers
             }
         }
 
-        // GET: Pago/Delete/5
-        public ActionResult Delete(int id)
+        // GET: Pagos/Edit/5
+        public ActionResult Edit(int id)
         {
-
             using (var context = new PagosContext())
             {
-                return View(context.Pagos.Where(x => x.id == id).FirstOrDefault());
-
+                return View(context.Pagos.Where(x => x.Id == id).FirstOrDefault());
             }
-
         }
 
-        // POST: Pago/Delete/5
+        // POST: Pagos/Edit/5
+        [HttpPost]
+        public ActionResult Edit(int id, Pago pago)
+        {
+            try
+            {
+              using (var context = new PagosContext())
+                {
+                    context.Entry(pago).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Pagos/Delete/5
+        public ActionResult Delete(int id)
+        {
+            using (var context = new PagosContext())
+            {
+                return View(context.Pagos.Where(x => x.Id == id).FirstOrDefault());
+            }
+        }
+
+        // POST: Pagos/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -129,7 +104,7 @@ namespace CrudASPEjemplo.Controllers
             {
                 using (var context = new PagosContext())
                 {
-                    Pago pago = context.Pagos.Where(x => x.id == id).FirstOrDefault();
+                    Pago pago = context.Pagos.Where(x => x.Id == id).FirstOrDefault();
                     context.Pagos.Remove(pago);
                     context.SaveChanges();
                 }

@@ -12,7 +12,7 @@ namespace CrudASPEjemplo.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "#")]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [ForeignKey("Cliente")]
         public int ClienteId { get; set; }
